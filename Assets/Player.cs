@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Script : MonoBehaviour
 {
-    public float speedMove;
-    public float jumbForce;
-    public Rigidbody2D rb;
+    private Rigidbody2D rb;
+
+    [SerializeField] private float speedMove;
+    [SerializeField] private float jumbForce;
+    
     private float xInput;
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         //rb.velocity = new Vector2(5, rb.velocity.y);
         //Debug.Log("Start was called");
     }
