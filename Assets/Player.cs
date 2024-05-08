@@ -16,7 +16,7 @@ public class Script : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //rb.velocity = new Vector2(5, rb.velocity.y);
         //Debug.Log("Start was called");
-    }
+    } 
 
     // Update is called once per frame
     void Update()
