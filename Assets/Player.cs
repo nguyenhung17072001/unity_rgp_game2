@@ -14,6 +14,8 @@ public class Script : MonoBehaviour
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashDuration;
     [SerializeField] private float dashTime;
+    [SerializeField] private float dashCoolDown;
+    [SerializeField] private float dashCoolDownTimer;
 
     private float xInput;
 
@@ -46,11 +48,8 @@ public class Script : MonoBehaviour
 
         //dashTime = dashTime - Time.deltaTime;
         dashTime -= Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            dashTime = dashDuration;
-
-        }
+        dashCoolDownTimer -= Time.deltaTime;
+        
         
 
         AnimatorControllers();
@@ -71,14 +70,27 @@ public class Script : MonoBehaviour
         {
             Jumb();
         }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            DashAbility();
 
+        }
+
+    }
+    private void DashAbility()
+    {
+        if(dashCoolDownTimer < 0)
+        {
+            dashCoolDownTimer = dashCoolDown;
+            dashTime = dashDuration;
+        }
     }
 
     private void Movement()
     {
         if (dashTime > 0)
         {
-            rb.velocity = new Vector2(xInput * dashSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(xInput * dashSpeed, 0);
         }
         else
         {
@@ -102,6 +114,7 @@ public class Script : MonoBehaviour
         anim.SetBool("isMoving", isMoving);
         anim.SetBool("isGrounded", isGrounded);
         anim.SetFloat("yVelocity", rb.velocity.y);
+        anim.SetBool("isDashing", dashTime > 0);
 
     }
     private void Flip()
