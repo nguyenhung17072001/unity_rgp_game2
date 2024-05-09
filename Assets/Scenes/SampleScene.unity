@@ -242,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 1135424175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.146, y: -0.237, z: 0}
+  m_LocalPosition: {x: 0.06, y: -0.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -461,8 +461,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1692044134}
   - component: {fileID: 1692044136}
-  - component: {fileID: 1692044137}
   - component: {fileID: 1692044138}
+  - component: {fileID: 1692044137}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -501,8 +501,8 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 26b098636005d4913badde45133af964, type: 2}
+  m_GravityScale: 3.5
+  m_Material: {fileID: 6200000, guid: ef5f00479d42a474ba2b4e21ea7c1516, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -525,8 +525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d94b8028ca8fd4812aed7cde582a89b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMove: 4
-  jumbForce: 7
+  speedMove: 8
+  jumbForce: 12
+  groundCheckDistance2: 3.03
   groundCheckDistance: 1.5
   whatIsRound:
     serializedVersion: 2
@@ -563,8 +564,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.24255198, y: -0.29242408}
-  m_Size: {x: 0.83973086, y: 2.1007574}
+  m_Offset: {x: -0.046081126, y: -0.29242408}
+  m_Size: {x: 0.883391, y: 2.1007574}
   m_Direction: 0
 --- !u!1 &1696510268
 GameObject:
