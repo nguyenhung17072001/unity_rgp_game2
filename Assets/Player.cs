@@ -7,10 +7,14 @@ public class Script : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
 
-    [SerializeField] private float speedMove;
+    [SerializeField] private float moveSpeed;
     [SerializeField] private float jumbForce;
 
-    
+    [Header("Dash info")]
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashDuration;
+    [SerializeField] private float dashTime;
+
     private float xInput;
 
     private int facingDir = 1;
@@ -40,6 +44,15 @@ public class Script : MonoBehaviour
         CheckInput();
         CollisionChecks();
 
+        //dashTime = dashTime - Time.deltaTime;
+        dashTime -= Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            dashTime = dashDuration;
+
+        }
+        
+
         AnimatorControllers();
         FlipController();
 
@@ -63,7 +76,14 @@ public class Script : MonoBehaviour
 
     private void Movement()
     {
-        rb.velocity = new Vector2(xInput * speedMove, rb.velocity.y);
+        if (dashTime > 0)
+        {
+            rb.velocity = new Vector2(xInput * dashSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(xInput * moveSpeed, rb.velocity.y);
+        }
 
     }
 
