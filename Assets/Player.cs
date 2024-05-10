@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
-    private Rigidbody2D rb;
-    private Animator anim;
 
+    [Header("Move info")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumbForce;
 
@@ -23,34 +22,25 @@ public class Player : MonoBehaviour
     private bool isAttracking;
     private int comboCounter;
     
-
-    [Header("Collision info")]
-    private bool isGrounded;
-    [SerializeField] private float groundCheckDistance2;
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private LayerMask whatIsRound;
+        
+    
 
 
     private float xInput;
-    private bool facingRight = true;
-    private float facingDir = 1;
+    
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-        //rb.velocity = new Vector2(5, rb.velocity.y);
-        //Debug.Log("Start was called");
-    } 
+        base.Start();
+    }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        
+        base.Update();
 
         Movement();
         CheckInput();
-        CollisionChecks();
 
         //dashTime = dashTime - Time.deltaTime;
         dashTime -= Time.deltaTime;
@@ -78,11 +68,7 @@ public class Player : MonoBehaviour
         
     }
 
-    private void CollisionChecks()
-    {
-        //check xem có chạm vào ground không (whatIsRound)
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsRound);
-    }
+    
 
     private void CheckInput()
     {
@@ -161,12 +147,7 @@ public class Player : MonoBehaviour
         anim.SetInteger("comboCounter", comboCounter);
 
     }
-    private void Flip()
-    {
-        facingDir = facingDir * -1;
-        facingRight = !facingRight;
-        transform.Rotate(0, 180, 0);
-    }
+    
 
     private void FlipController()
     {
