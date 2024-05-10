@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Script : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
@@ -17,10 +17,12 @@ public class Script : MonoBehaviour
     [SerializeField] private float dashCoolDown;
     [SerializeField] private float dashCoolDownTimer;
 
-    private float xInput;
-
-    private int facingDir = 1;
-    private bool facingRight = true;
+    [Header("Attrack info")]
+    [SerializeField] private float comboTime = .3f;
+    private float comboTimeWindow;
+    private bool isAttracking;
+    private int comboCounter;
+    
 
     [Header("Collision info")]
     private bool isGrounded;
@@ -28,6 +30,10 @@ public class Script : MonoBehaviour
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsRound;
 
+
+    private float xInput;
+    private bool facingRight = true;
+    private float facingDir = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,12 +55,27 @@ public class Script : MonoBehaviour
         //dashTime = dashTime - Time.deltaTime;
         dashTime -= Time.deltaTime;
         dashCoolDownTimer -= Time.deltaTime;
-        
+        comboTimeWindow -= Time.deltaTime;
         
 
         AnimatorControllers();
         FlipController();
 
+    }
+
+
+    public void AttrackOver()
+    {
+        isAttracking = false;
+
+        comboCounter++;
+        //Debug.Log(comboCounter);
+        if(comboCounter>2)
+        {
+            comboCounter = 0;
+        }
+        
+        
     }
 
     private void CollisionChecks()
@@ -66,6 +87,10 @@ public class Script : MonoBehaviour
     private void CheckInput()
     {
         xInput = Input.GetAxisRaw("Horizontal");
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            StartAttrack();
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jumb();
@@ -77,20 +102,37 @@ public class Script : MonoBehaviour
         }
 
     }
+
+    private void StartAttrack()
+    {
+        if (!isGrounded)
+            return;
+        //smoth combo
+        if (comboTimeWindow < 0)
+            comboCounter = 0;
+
+        isAttracking = true;
+        comboTimeWindow = comboTime;
+    }
+
     private void DashAbility()
     {
-        if(dashCoolDownTimer < 0)
+        if(dashCoolDownTimer < 0 && !isAttracking)
         {
             dashCoolDownTimer = dashCoolDown;
             dashTime = dashDuration;
         }
     }
-
+    
     private void Movement()
     {
-        if (dashTime > 0)
+        if(isAttracking)
         {
-            rb.velocity = new Vector2(xInput * dashSpeed, 0);
+            rb.velocity = new Vector2(0, 0);
+        }
+        else if (dashTime > 0)
+        {
+            rb.velocity = new Vector2(facingDir * dashSpeed, 0);
         }
         else
         {
@@ -115,11 +157,13 @@ public class Script : MonoBehaviour
         anim.SetBool("isGrounded", isGrounded);
         anim.SetFloat("yVelocity", rb.velocity.y);
         anim.SetBool("isDashing", dashTime > 0);
+        anim.SetBool("isAttracking", isAttracking);
+        anim.SetInteger("comboCounter", comboCounter);
 
     }
     private void Flip()
     {
-        //facingDir = facingDir * -1;
+        facingDir = facingDir * -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
     }
