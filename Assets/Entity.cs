@@ -13,8 +13,14 @@ public class Entity : MonoBehaviour
     [Header("Collision info")]
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDistance;
+    [Space]
+    [SerializeField] protected Transform wallCheck;
+    [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsRound;
+
+
     protected bool isGrounded;
+    protected bool isWallDetected;
 
 
 
@@ -22,6 +28,9 @@ public class Entity : MonoBehaviour
     {
         rb = GetComponentInChildren<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
+
+        if (wallCheck == null)
+            wallCheck = transform;
     }
 
     // Update is called once per frame
@@ -34,6 +43,7 @@ public class Entity : MonoBehaviour
     {
         //check xem có chạm vào ground không (whatIsRound)
         isGrounded = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsRound);
+        isWallDetected = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance * facingDir, whatIsRound);
     }
     protected virtual void Flip()
     {
@@ -44,5 +54,6 @@ public class Entity : MonoBehaviour
     protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance, 0));
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x+ wallCheckDistance * facingDir, wallCheck.position.y));
     }
 }
