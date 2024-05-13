@@ -158,9 +158,6 @@ public class Player : Entity
         
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundCheckDistance, 0));
-    }
+    
 }   
     
